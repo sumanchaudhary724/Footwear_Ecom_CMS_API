@@ -1,0 +1,14 @@
+express 
+mongoose 
+cors 
+morgan 
+dotenv 
+bcryptjs
+
+joi
+multer
+nodemailer
+jsonwebtoken
+
+
+npm i express mongoose cors morgan dotenv bcryptjs
