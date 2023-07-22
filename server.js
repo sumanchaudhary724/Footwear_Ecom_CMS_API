@@ -17,6 +17,10 @@ app.use(express.json());
 
 mongoConnect();
 
+// api
+import adminRouter from "./src/router/adminRouter.js";
+app.use("/api/v1/admin", adminRouter);
+
 app.get("/", (req, res) => {
   res.json({
     status: "success",
@@ -24,8 +28,17 @@ app.get("/", (req, res) => {
   });
 });
 
+app.use((error, req, res, next) => {
+  const code = error.statusCode || 500;
+  res.status(code).json({
+    status: "error",
+    message: error.message,
+    code,
+  });
+});
+
 app.listen(PORT, (error) => {
   error
     ? console.log(error)
-    : console.log(`Server is running at http://localhost:8000`);
+    : console.log(`Server is running at http://localhost:${PORT}`);
 });
