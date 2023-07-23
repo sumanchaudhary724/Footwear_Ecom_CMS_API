@@ -8,12 +8,12 @@ export const getAdminByEmail = (email) => {
   return AdminSchema.findOne({ email });
 };
 
-export const getAdmin = () => {
-  return AdminSchema.find();
-};
-
 export const updateAdminById = ({ _id, ...rest }) => {
-  return AdminSchema.findByAndUpdate(_id, rest);
+  return AdminSchema.findByIdAndUpdate(_id, rest);
+};
+//@filter, @updateObj must be an obj
+export const updateAdmin = (filter, updateObj) => {
+  return AdminSchema.findOneAndUpdate(filter, updateObj, { new: true });
 };
 
 export const deleteAdmin = (_id) => {
