@@ -13,3 +13,15 @@ Content-Type: application/json
     "password": "123456k",
     "address": "",
 } 
+
+# ====== admin api 
+### POST Category
+POST {{rootAPI}}/category
+Content-Type: application/json
+
+{
+    "title": "Home Furniture"
+}
+
+### GET Categories
+GET {{rootAPI}}/category

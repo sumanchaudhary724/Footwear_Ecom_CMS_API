@@ -19,7 +19,9 @@ mongoConnect();
 
 // api
 import adminRouter from "./src/router/adminRouter.js";
+import categoryRouter from "./src/router/categoryRouter.js";
 app.use("/api/v1/admin", adminRouter);
+app.use("/api/v1/category", categoryRouter);
 
 app.get("/", (req, res) => {
   res.json({
