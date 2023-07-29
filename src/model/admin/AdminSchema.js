@@ -10,29 +10,29 @@ const adminSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-
     lName: {
       type: String,
       required: true,
     },
-
     phone: {
       type: String,
-      required: false,
+      required: true,
     },
-
+    address: {
+      type: String,
+      default: "",
+    },
     email: {
       type: String,
-      required: true,
       unique: true,
       index: 1,
+      required: true,
     },
-
     password: {
       type: String,
       required: true,
     },
-    isVerfied: {
+    isVerified: {
       type: Boolean,
       default: false,
     },
@@ -40,16 +40,14 @@ const adminSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-
-    address: {
+    refreshJWT: {
       type: String,
       default: "",
     },
-    profile: {
-      type: String,
-      required: false,
-    },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  }
 );
-export default mongoose.model("admin", adminSchema);
+
+export default mongoose.model("Admin", adminSchema); ///admins
