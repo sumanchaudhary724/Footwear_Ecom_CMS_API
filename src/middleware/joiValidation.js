@@ -92,3 +92,48 @@ export const updateCatValidation = (req, res, next) => {
     next(error);
   }
 };
+
+// ======== payment options
+export const newPOValidation = (req, res, next) => {
+  try {
+    //define the schema
+    const schema = Joi.object({
+      status: SHORTSTRREQ,
+      title: SHORTSTRREQ,
+      description: SHORTSTRREQ,
+    });
+
+    const { error } = schema.validate(req.body);
+
+    error
+      ? res.json({
+          status: "error",
+          message: error.message,
+        })
+      : next();
+  } catch (error) {
+    next(error);
+  }
+};
+export const updatePaymentValidation = (req, res, next) => {
+  try {
+    //define the schema
+    const schema = Joi.object({
+      _id: SHORTSTRREQ,
+      status: SHORTSTRREQ,
+      title: SHORTSTRREQ,
+      description: SHORTSTRREQ,
+    });
+
+    const { error } = schema.validate(req.body);
+
+    error
+      ? res.json({
+          status: "error",
+          message: error.message,
+        })
+      : next();
+  } catch (error) {
+    next(error);
+  }
+};

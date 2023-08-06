@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const CategorySchema = new mongoose.Schema(
+const PaymentSchema = new mongoose.Schema(
   {
     status: {
       type: String,
@@ -11,10 +11,8 @@ const CategorySchema = new mongoose.Schema(
       required: true,
     },
 
-    slug: {
+    description: {
       type: String,
-      unique: true,
-      index: 1,
       required: true,
     },
   },
@@ -23,4 +21,4 @@ const CategorySchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model("Category", CategorySchema); ///category
+export default mongoose.model("PaymentOption", PaymentSchema); ///payment

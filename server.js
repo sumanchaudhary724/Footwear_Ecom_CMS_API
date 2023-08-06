@@ -20,8 +20,11 @@ mongoConnect();
 // api
 import adminRouter from "./src/router/adminRouter.js";
 import categoryRouter from "./src/router/categoryRouter.js";
+import paymentOptionRouter from "./src/router/paymentOptionRouter.js";
+import { auth } from "./src/middleware/authMiddleware.js";
 app.use("/api/v1/admin", adminRouter);
-app.use("/api/v1/category", categoryRouter);
+app.use("/api/v1/category", auth, categoryRouter);
+app.use("/api/v1/payment-option", auth, paymentOptionRouter);
 
 app.get("/", (req, res) => {
   res.json({

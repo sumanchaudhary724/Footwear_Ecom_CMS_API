@@ -25,3 +25,63 @@ Content-Type: application/json
 
 ### GET Categories
 GET {{rootAPI}}/category
+
+### POST payment
+POST {{rootAPI}}/payment
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1bWFuQGdtYWlsLmNvbSIsImlhdCI6MTY5MTI5MjQ4MSwiZXhwIjoxNjkzODg0NDgxfQ.nTRmTDLXqPo0tQvnI2ZRVPRNjlnpqXiN-2qq1oiigy0
+
+{
+    "title": "MasterCard"
+}
+
+### GET Categories
+GET {{rootAPI}}/payment
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1bWFuQGdtYWlsLmNvbSIsImlhdCI6MTY5MTI5NTM0NywiZXhwIjoxNjkzODg3MzQ3fQ.Z6L9n0u_YYdwD_UloPRoB8U8iuAt44HAs2ADwt5QcgQ
+ 
+###
+POST {{rootAPI}}/admin/sign-in
+Content-Type: application/json
+
+{
+    "fName": "Prem",
+    "lName": "Acharya",
+    "phone": "098789789",
+    "email": "a@a.com",
+    "password": "123456k",
+    "address": "",
+} 
+
+### Creare new admin
+POST {{rootAPI}}/admin/sign-in
+Content-Type: application/json
+
+{
+"email": "a@a.com",
+"password": "123456"
+}
+
+
+
+
+# ====== admin api 
+### POST Category
+POST {{rootAPI}}/category
+Content-Type: application/json
+
+{
+    "title": "Home Furniture"
+}
+
+### GET Categories
+GET {{rootAPI}}/category
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1bWFuQGdtYWlsLmNvbSIsImlhdCI6MTY5MTMxNTEyNCwiZXhwIjoxNjkzOTA3MTI0fQ.MsZEBxSSm60x1_6TAFtnVnotuMjB_CFdmkL1bKFrEn8
+
+ 
+# ====== request new  access jwt api
+
+
+
+### GET Categories
+GET {{rootAPI}}/admin/get-accessjwt
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1bWFuQGdtYWlsLmNvbSIsImlhdCI6MTY5MTMxNTEyNCwiZXhwIjoxNjkzOTA3MTI0fQ.MsZEBxSSm60x1_6TAFtnVnotuMjB_CFdmkL1bKFrEn8 

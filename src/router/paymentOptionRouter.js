@@ -1,23 +1,21 @@
 import express from "express";
 import {
-  deleteCategorybyId,
-  getCategories,
-  insertCategory,
-  updateCategoryById,
-} from "../model/category/CategoryModel.js";
-import slugify from "slugify";
-import { updateCatValidation } from "../middleware/joiValidation.js";
+  deletePaymentbyId,
+  getPayments,
+  insertPayment,
+  updatePaymentById,
+} from "../model/payment/PaymentModel.js";
+import { updatePaymentValidation } from "../middleware/joiValidation.js";
 
 const router = express.Router();
 
 router.get("/", async (req, res, next) => {
   try {
-    console.log(req.userInfo);
-    const result = await getCategories();
+    const result = await getPayments();
 
     res.json({
       status: "success",
-      message: " New category has been added",
+      message: " New payment has been added",
       result,
     });
   } catch (error) {
@@ -27,48 +25,39 @@ router.get("/", async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
   try {
-    const { title } = req.body;
-    !title &&
-      res.json({ status: "error", message: "Category title is required" });
-
-    const obj = {
-      title,
-      slug: slugify(title, { trim: true, lower: true }),
-    };
-
-    const result = await insertCategory(obj);
+    const result = await insertPayment(obj);
 
     result?._id
       ? res.json({
           status: "success",
-          message: " New category has been added",
+          message: " New payment method has been added",
         })
       : res.json({
           status: "error",
-          message: "Error, Unable to add new category.",
+          message: "Error, Unable to add new payment.",
         });
   } catch (error) {
     if (error.message.includes("E11000 duplicate key error")) {
       error.statusCode = 200;
       error.message =
-        "The slug for the category already exist, please change the catgegory name ans try again.";
+        "The slug for the payment already exist, please change the payment name ans try again.";
     }
     next(error);
   }
 });
 
-router.put("/", updateCatValidation, async (req, res, next) => {
+router.put("/", updatePaymentValidation, async (req, res, next) => {
   try {
-    const result = await updateCategoryById(req.body);
+    const result = await updatePaymentById(req.body);
 
     result?._id
       ? res.json({
           status: "success",
-          message: "The category has been updated",
+          message: "The payment has been updated",
         })
       : res.json({
           status: "error",
-          message: "Error, Unable to udpate new category.",
+          message: "Error, Unable to udpate new payment.",
         });
   } catch (error) {
     next(error);
@@ -78,11 +67,11 @@ router.delete("/:_id", async (req, res, next) => {
   const { _id } = req.params;
   try {
     if (_id) {
-      const result = await deleteCategorybyId(_id);
+      const result = await deletePaymentbyId(_id);
       result?._id &&
         res.json({
           status: "success",
-          message: "The category has been deleted",
+          message: "The payment has been deleted",
         });
 
       return;

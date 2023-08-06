@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const sessionSchema = new mongoose.Schema(
+const SessionSchema = new mongoose.Schema(
   {
     token: {
       type: String,
@@ -17,4 +17,4 @@ const sessionSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model("Session", sessionSchema); ///sessions
+export default mongoose.model("Session", SessionSchema); ///sessions

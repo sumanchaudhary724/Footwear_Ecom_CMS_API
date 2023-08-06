@@ -4,6 +4,7 @@ import {
   getAdminByEmail,
   insertAdmin,
   updateAdmin,
+  updateAdminById,
 } from "../model/admin/AdminModel.js";
 import {
   loginValidation,
@@ -16,11 +17,26 @@ import {
 } from "../helper/nodemailer.js";
 import { v4 as uuidv4 } from "uuid";
 import { createAcessJWT, createRefreshJWT } from "../helper/jwt.js";
+import { auth, refreshAuth } from "../middleware/authMiddleware.js";
+import { deleteSession } from "../model/session/SessionModel.js";
 
 const router = express.Router();
 
+// get admin details
+router.get("/", auth, (req, res, next) => {
+  try {
+    res.json({
+      status: "success",
+      message: "here is the user info",
+      user: req.userInfo,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 // create new admin api
-router.post("/", newAdminValidation, async (req, res, next) => {
+router.post("/", auth, newAdminValidation, async (req, res, next) => {
   try {
     const { password } = req.body;
     req.body.password = hashPassword(password);
@@ -114,7 +130,7 @@ router.post("/sign-in", loginValidation, async (req, res, next) => {
 
         const accessJWT = await createAcessJWT(email);
         const refreshJWT = await createRefreshJWT(email);
-        console.log(accessJWT);
+
         //// create accessJWT and store in session table: short live 15m
         //// create refreshJWT and store with user data in user table: long live 30d
 
@@ -135,4 +151,27 @@ router.post("/sign-in", loginValidation, async (req, res, next) => {
     next(error);
   }
 });
+
+// return the refreshJWT
+router.get("/get-accessjwt", refreshAuth);
+
+//logout
+router.post("/logout", async (req, res, next) => {
+  try {
+    const { accessJWT, refreshJWT, _id } = req.body;
+
+    accessJWT && deleteSession(accessJWT);
+
+    if (refreshJWT && _id) {
+      const dt = await updateAdminById({ _id, refreshJWT: "" });
+    }
+
+    res.json({
+      status: "success",
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;
