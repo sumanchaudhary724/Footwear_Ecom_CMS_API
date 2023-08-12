@@ -10,12 +10,18 @@ const PORT = process.env.PORT || 8000;
 import morgan from "morgan";
 import cors from "cors";
 import mongoConnect from "./src/config/mongoConfig.js";
+import path from "path";
 
 app.use(morgan("dev"));
 app.use(cors());
 app.use(express.json());
 
 mongoConnect();
+
+const _dirname = path.resolve();
+console.log(_dirname);
+
+app.use(express.static(path.join(_dirname, "/public")));
 
 // api
 import adminRouter from "./src/router/adminRouter.js";

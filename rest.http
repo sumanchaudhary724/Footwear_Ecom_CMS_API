@@ -75,7 +75,7 @@ Content-Type: application/json
 
 ### GET Categories
 GET {{rootAPI}}/category
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1bWFuQGdtYWlsLmNvbSIsImlhdCI6MTY5MTMxNTEyNCwiZXhwIjoxNjkzOTA3MTI0fQ.MsZEBxSSm60x1_6TAFtnVnotuMjB_CFdmkL1bKFrEn8
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1bWFuQGdtYWlsLmNvbSIsImlhdCI6MTY5MTgxNDY5NiwiZXhwIjoxNjk0NDA2Njk2fQ.khApD63400jctaWhsq-SpPHV7nqRvF17EnjrN_ZUoqU
 
  
 # ====== request new  access jwt api

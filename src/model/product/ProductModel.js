@@ -8,6 +8,10 @@ export const getProducts = () => {
   return ProductSchema.find();
 };
 
+export const findOneProductById = (filter) => {
+  return ProductSchema.findOne(filter);
+};
+
 export const findOneProductByFilter = (filter) => {
   return ProductSchema.findOne(filter);
 };
