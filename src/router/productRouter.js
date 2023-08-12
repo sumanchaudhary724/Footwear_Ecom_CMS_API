@@ -1,85 +1,73 @@
 import express from "express";
-import {
-  addProduct,
-  deleteProductById,
-  getProducts,
-} from "../model/product/ProductModel.js";
+
 import slugify from "slugify";
+import {
+  deleteproductbyId,
+  getProducts,
+  insertProduct,
+} from "../model/product/ProductModel.js";
+import { newProductValidation } from "../middleware/joiValidation.js";
 
 const router = express.Router();
 
 router.get("/", async (req, res, next) => {
   try {
-    const result = await getProducts();
+    const products = await getProducts();
+
     res.json({
       status: "success",
-      message: "Results received",
-      result: [],
+      message: "Here are the products",
+      products,
     });
   } catch (error) {
     next(error);
   }
 });
-router.post("/", async (req, res, next) => {
+
+router.post("/", newProductValidation, async (req, res, next) => {
   try {
     console.log(req.body);
     req.body.slug = slugify(req.body.name, { trim: true, lower: true });
-    const obj = {
-      title,
-      slug: slugify(title, { lower: true, trim: true }),
-    };
-    const result = await addProduct(obj);
+
+    const result = await insertProduct(req.body);
+
     result?._id
       ? res.json({
           status: "success",
-          message: "New product Sucessfully added",
+          message: "The new product has been added successfully",
         })
       : res.json({
           status: "error",
-          message: "Unable to add new category",
+          message: "Unable to add new product, try again later",
         });
   } catch (error) {
-    if (error.message.includes("E11000 duplicate key error")) {
-      error.statusCode = 400;
-      error.message = "This title is already avilable in the database.";
+    if (error.message.includes("E11000 duplicate key error collection")) {
+      error.statusCode = 200;
+      error.message =
+        "The product slug or sku alread related to another product, change name and sku and try agin later.";
     }
     next(error);
   }
 });
-// router.put("/", async (req, res, next) => {
-//   try {
-//     const { value, ...rest } = req.body;
-//     const result = await updateCatagory(value, rest);
-//     const { title, status } = result;
-//     result?._id
-//       ? res.json({
-//           status: "success",
-//           message: `${title} is ${status}`,
-//         })
-//       : res.json({
-//           status: "error",
-//           message: "Unable to add new category",
-//         });
-//   } catch (error) {
-//     next(error);
-//   }
-// });
+
 router.delete("/:_id", async (req, res, next) => {
   try {
     const { _id } = req.params;
-    console.log(_id);
-    const result = await deleteProductById(_id);
+
+    const result = await deleteproductbyId(_id);
+
     result?._id
       ? res.json({
           status: "success",
-          message: result.title + " deleted.",
+          message: "The  product has been deleted successfully",
         })
       : res.json({
           status: "error",
-          message: "Unable to delete",
+          message: "Unable to delete the product, try again later",
         });
   } catch (error) {
     next(error);
   }
 });
+
 export default router;

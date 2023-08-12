@@ -2,6 +2,9 @@ import Joi from "joi";
 
 const SHORTSTRREQ = Joi.string().min(3).max(100).required();
 const SHORTSTR = Joi.string().min(3).max(100);
+const LONGTSTR = Joi.string().min(3).max(10000);
+const NUM = Joi.number();
+const NUMREQ = Joi.number().required();
 
 // ======== admin
 export const newAdminValidation = (req, res, next) => {
@@ -138,17 +141,21 @@ export const updatePOValidation = (req, res, next) => {
   }
 };
 
-// ======== product
-export const updateProductValidation = (req, res, next) => {
+// ======== product validation
+export const newProductValidation = (req, res, next) => {
   try {
     req.body.salesPrice = req.body.salesPrice || 0;
+
     //define the schema
     const schema = Joi.object({
-      name: SHORTSTRREQ,
       status: SHORTSTRREQ,
-      price: SHORTSTRREQ,
-      salesPrice: NUMREQ,
-      description: LONGSTR,
+      name: SHORTSTRREQ,
+      parentCat: SHORTSTRREQ,
+      sku: SHORTSTRREQ,
+      price: NUMREQ,
+      qty: NUMREQ,
+      salesPrice: NUM,
+      description: LONGTSTR,
       salesStartDate: SHORTSTR.allow("", null),
       salesEndDate: SHORTSTR.allow("", null),
     });
