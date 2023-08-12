@@ -115,7 +115,7 @@ export const newPOValidation = (req, res, next) => {
     next(error);
   }
 };
-export const updatePaymentValidation = (req, res, next) => {
+export const updatePOValidation = (req, res, next) => {
   try {
     //define the schema
     const schema = Joi.object({
@@ -123,6 +123,34 @@ export const updatePaymentValidation = (req, res, next) => {
       status: SHORTSTRREQ,
       title: SHORTSTRREQ,
       description: SHORTSTRREQ,
+    });
+
+    const { error } = schema.validate(req.body);
+
+    error
+      ? res.json({
+          status: "error",
+          message: error.message,
+        })
+      : next();
+  } catch (error) {
+    next(error);
+  }
+};
+
+// ======== product
+export const updateProductValidation = (req, res, next) => {
+  try {
+    req.body.salesPrice = req.body.salesPrice || 0;
+    //define the schema
+    const schema = Joi.object({
+      name: SHORTSTRREQ,
+      status: SHORTSTRREQ,
+      price: SHORTSTRREQ,
+      salesPrice: NUMREQ,
+      description: LONGSTR,
+      salesStartDate: SHORTSTR.allow("", null),
+      salesEndDate: SHORTSTR.allow("", null),
     });
 
     const { error } = schema.validate(req.body);
