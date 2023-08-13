@@ -8,8 +8,8 @@ export const getProducts = () => {
   return ProductSchema.find();
 };
 
-export const findOneProductById = (filter) => {
-  return ProductSchema.findOne(filter);
+export const getProductById = (_id) => {
+  return ProductSchema.findById(_id);
 };
 
 export const findOneProductByFilter = (filter) => {
@@ -17,7 +17,7 @@ export const findOneProductByFilter = (filter) => {
 };
 
 export const updateProductById = ({ _id, ...rest }) => {
-  return ProductSchema.findByIdAndUpdate(_id, rest);
+  return ProductSchema.findByIdAndUpdate(_id, rest, { new: true });
 };
 
 //@filter, @updateObj must be an obj

@@ -3,39 +3,42 @@ import express from "express";
 import slugify from "slugify";
 import {
   deleteproductbyId,
+  getProductById,
   getProducts,
   insertProduct,
+  updateProductById,
 } from "../model/product/ProductModel.js";
-import { newProductValidation } from "../middleware/joiValidation.js";
+import {
+  newProductValidation,
+  updateProductValidation,
+} from "../middleware/joiValidation.js";
 import multer from "multer";
 
 const router = express.Router();
 
 const imgFolderPath = "public/img/product";
-
 //setup multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     let error = null;
-    //validate check
+    // validation check
     cb(error, imgFolderPath);
   },
   filename: (req, file, cb) => {
     let error = null;
-    // construct name file name
-    const fullFileName = Date.now() + "_" + file.originalname;
-    console.log(file.mimetype);
+    // construct/ rename file name
+    const fullFileName = Date.now() + "-" + file.originalname;
+
     cb(error, fullFileName);
   },
 });
 
-const upload = multer(storage);
-//where do you want to store the file
-// what name do you want to give to
+const upload = multer({ storage });
 
-router.get("/", async (req, res, next) => {
+router.get("/:_id?", async (req, res, next) => {
   try {
-    const products = await getProducts();
+    const { _id } = req.params;
+    const products = _id ? await getProductById(_id) : await getProducts();
 
     res.json({
       status: "success",
@@ -53,7 +56,11 @@ router.post(
   newProductValidation,
   async (req, res, next) => {
     try {
-      console.log(req.body);
+      if (req.files.length) {
+        req.body.images = req.files.map((item) => item.path);
+        req.body.thumbnail = req.body.images[0];
+      }
+
       req.body.slug = slugify(req.body.name, { trim: true, lower: true });
 
       const result = await insertProduct(req.body);
@@ -73,6 +80,34 @@ router.post(
         error.message =
           "The product slug or sku alread related to another product, change name and sku and try agin later.";
       }
+      next(error);
+    }
+  }
+);
+
+router.put(
+  "/",
+  upload.array("images", 5),
+  updateProductValidation,
+  async (req, res, next) => {
+    try {
+      if (req.files.length) {
+        const newImgs = req.files.map((item) => item.path);
+        req.body.images = [...req.body.images, ...newImgs];
+      }
+
+      const result = await updateProductById(req.body);
+
+      result?._id
+        ? res.json({
+            status: "success",
+            message: "The product has been updated successfully",
+          })
+        : res.json({
+            status: "error",
+            message: "Unable to update the product, try again later",
+          });
+    } catch (error) {
       next(error);
     }
   }

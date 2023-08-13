@@ -37,11 +37,9 @@ const productSchema = new mongoose.Schema(
     },
     salesStartDate: {
       type: Date,
-      default: null,
     },
     salesEndDate: {
       type: Date,
-      default: null,
     },
     sku: {
       type: String,
@@ -52,6 +50,15 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    thumbnail: {
+      type: String,
+      required: true,
+    },
+    images: [
+      {
+        type: String,
+      },
+    ],
   },
   {
     timestamps: true,

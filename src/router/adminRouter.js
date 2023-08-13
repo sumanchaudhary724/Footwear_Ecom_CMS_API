@@ -14,11 +14,18 @@ import {
 import {
   accountVerificationEmail,
   accountVerifiedNotification,
+  passwordChangedNotification,
+  sendOTPNotification,
 } from "../helper/nodemailer.js";
 import { v4 as uuidv4 } from "uuid";
 import { createAcessJWT, createRefreshJWT } from "../helper/jwt.js";
 import { auth, refreshAuth } from "../middleware/authMiddleware.js";
-import { deleteSession } from "../model/session/SessionModel.js";
+import {
+  deleteSession,
+  deleteSessionByFilter,
+  insertNewSession,
+} from "../model/session/SessionModel.js";
+import { otpGenerator } from "../helper/randomGenerator.js";
 
 const router = express.Router();
 
@@ -168,6 +175,96 @@ router.post("/logout", async (req, res, next) => {
 
     res.json({
       status: "success",
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// ===== reseting passowrd
+router.post("/request-opt", async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    console.log(email);
+    if (email) {
+      //check user exist
+
+      const user = await getAdminByEmail(email);
+      if (user?._id) {
+        // create 6 digit otp and sotre in session with email
+        const otp = otpGenerator();
+
+        // store opt and email in session table for futur check
+
+        const obj = {
+          token: otp,
+          associate: email,
+        };
+
+        const result = await insertNewSession(obj);
+        if (result?._id) {
+          // send opt to their email
+          await sendOTPNotification({
+            otp,
+            email,
+            fName: user.fName,
+          });
+        }
+      }
+    }
+    res.json({
+      status: "success",
+      message:
+        "If your email exist in our system, you will get otp to your mailbox. Pelase check your email for the instruction and otp",
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+router.post("/reset-password", async (req, res, next) => {
+  try {
+    const { email, password, otp } = req.body;
+
+    if (email && password) {
+      // check if the token is valid
+
+      const result = await deleteSessionByFilter({
+        token: otp,
+        associate: email,
+      });
+
+      if (result?._id) {
+        //check user exist
+
+        const user = await getAdminByEmail(email);
+        if (user?._id) {
+          // encrypt the password
+
+          const hashPass = hashPassword(password);
+
+          const updatedUser = await updateAdmin(
+            { email },
+            { password: hashPass }
+          );
+          if (updatedUser?._id) {
+            // send email notification
+
+            await passwordChangedNotification({
+              email,
+              fName: updatedUser.fName,
+            });
+
+            return res.json({
+              status: "success",
+              message: "Your password has been updated, you may login now.",
+            });
+          }
+        }
+      }
+    }
+    res.json({
+      status: "error",
+      message: "Invalid request or token",
     });
   } catch (error) {
     next(error);
