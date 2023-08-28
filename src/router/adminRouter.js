@@ -2,6 +2,7 @@ import express from "express";
 import { compairPassword, hashPassword } from "../helper/bcrypt.js";
 import {
   getAdminByEmail,
+  getAllAdmin,
   insertAdmin,
   updateAdmin,
   updateAdminById,
@@ -36,6 +37,19 @@ router.get("/", auth, (req, res, next) => {
       status: "success",
       message: "here is the user info",
       user: req.userInfo,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/display", auth, async (req, res, next) => {
+  try {
+    const user = await getAllAdmin();
+    res.json({
+      status: "success",
+      message: " here is the user Info",
+      user,
     });
   } catch (error) {
     next(error);
@@ -266,6 +280,24 @@ router.post("/reset-password", async (req, res, next) => {
       status: "error",
       message: "Invalid request or token",
     });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// update user
+router.put("/", async (req, res, next) => {
+  try {
+    const result = await updateAdmin(req.body);
+    result?._id
+      ? res.json({
+          status: "success",
+          message: "User updated",
+        })
+      : res.json({
+          status: "error",
+          message: "error coming from model",
+        });
   } catch (error) {
     next(error);
   }
