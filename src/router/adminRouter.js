@@ -303,4 +303,7 @@ router.put("/", async (req, res, next) => {
   }
 });
 
+// update profile
+router.put("/profile", newAdminValidation, async (req, res, next) => {});
+
 export default router;
