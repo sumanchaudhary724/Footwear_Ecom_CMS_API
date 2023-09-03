@@ -85,3 +85,18 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1bWFuQGdtYWls
 ### GET Categories
 GET {{rootAPI}}/admin/get-accessjwt
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1bWFuQGdtYWlsLmNvbSIsImlhdCI6MTY5MTMxNTEyNCwiZXhwIjoxNjkzOTA3MTI0fQ.MsZEBxSSm60x1_6TAFtnVnotuMjB_CFdmkL1bKFrEn8 
+
+### Update Profile
+
+PUT {{rootAPI}}/admin/profile
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1bWFuQGdtYWlsLmNvbSIsImlhdCI6MTY5MzczNDUyMCwiZXhwIjoxNjk2MzI2NTIwfQ.h1Nk1rIbc1yhtqgD_ykP6c0JMvxiwTqu69VfTqlTAVo
+
+{
+    "fName": "Suman",
+    "lName": "Chaudhary",
+    "address": "hrtytty",
+    "phone": "2453456",
+    "email": "suman@gmail.com",
+    "password": "12345678"
+}

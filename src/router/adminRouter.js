@@ -285,25 +285,34 @@ router.post("/reset-password", async (req, res, next) => {
   }
 });
 
-// update user
-router.put("/", async (req, res, next) => {
+router.put("/profile", auth, newAdminValidation, async (req, res, next) => {
   try {
-    const result = await updateAdmin(req.body);
-    result?._id
-      ? res.json({
-          status: "success",
-          message: "User updated",
-        })
-      : res.json({
-          status: "error",
-          message: "error coming from model",
-        });
+    // Extract the necessary data from the request body
+    const { _id, fName, lName, address, email, phone, password } = req.body;
+
+    // Ensure that you have proper validation and error handling for the input data here
+    // ...
+
+    // Call the function to update the user's profile
+    const result = await updateAdmin(
+      { _id }, // Use _id to identify the user
+      { fName, lName, address, email, phone, password } // Update data
+    );
+
+    if (result?._id) {
+      return res.json({
+        status: "success",
+        message: "Profile updated",
+      });
+    } else {
+      return res.json({
+        status: "error",
+        message: "Error updating profile",
+      });
+    }
   } catch (error) {
     next(error);
   }
 });
-
-// update profile
-router.put("/profile", newAdminValidation, async (req, res, next) => {});
 
 export default router;
