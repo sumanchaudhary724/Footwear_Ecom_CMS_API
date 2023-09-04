@@ -80,6 +80,7 @@ export const updateCatValidation = (req, res, next) => {
     const schema = Joi.object({
       _id: SHORTSTRREQ,
       title: SHORTSTRREQ,
+      status: SHORTSTRREQ,
     });
 
     const { error } = schema.validate(req.body);
