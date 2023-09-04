@@ -16,6 +16,10 @@ export const getAllAdmin = () => {
   return AdminSchema.find();
 };
 
+export const getAdminById = async (_id) => {
+  return AdminSchema.findById(_id);
+};
+
 export const updateAdminById = ({ _id, ...rest }) => {
   return AdminSchema.findByIdAndUpdate(_id, rest);
 };

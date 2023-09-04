@@ -2,6 +2,7 @@ import express from "express";
 import { compairPassword, hashPassword } from "../helper/bcrypt.js";
 import {
   getAdminByEmail,
+  getAdminById,
   getAllAdmin,
   insertAdmin,
   updateAdmin,
@@ -308,6 +309,54 @@ router.put("/profile", auth, newAdminValidation, async (req, res, next) => {
       return res.json({
         status: "error",
         message: "Error updating profile",
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Update password
+router.put("/profilePassword", async (req, res, next) => {
+  try {
+    // Extract the necessary data from the request body
+    const { _id, newPassword, currentPassword } = req.body;
+
+    // Ensure that you have proper validation and error handling for the input data here
+    // ...
+
+    // Check if the current password matches the user's existing password
+    const user = await getAdminById(_id); // Implement this function to retrieve user data by ID
+    if (!user) {
+      return res.status(400).json({
+        status: "error",
+        message: "User not found",
+      });
+    }
+
+    const isMatched = compairPassword(currentPassword, user.password); // Implement the password comparison function
+    if (!isMatched) {
+      return res.status(401).json({
+        status: "error",
+        message: "Current password is incorrect",
+      });
+    }
+
+    // Encrypt the new password
+    const hashPass = hashPassword(newPassword); // Implement the password hashing function
+
+    // Update the user's password
+    const updatedUser = await updateAdminById({ _id, password: hashPass });
+
+    if (updatedUser?._id) {
+      return res.json({
+        status: "success",
+        message: "Password updated successfully",
+      });
+    } else {
+      return res.status(500).json({
+        status: "error",
+        message: "Error updating password",
       });
     }
   } catch (error) {
