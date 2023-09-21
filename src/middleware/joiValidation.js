@@ -195,6 +195,7 @@ export const updateProductValidation = (req, res, next) => {
       qty: NUMREQ,
       salesPrice: NUM,
       description: LONGTSTR,
+      color: SHORTSTR.allow("", null),
       salesStartDate: SHORTSTR.allow("", null),
       salesEndDate: SHORTSTR.allow("", null),
       images: LONGTSTR.allow(""),
