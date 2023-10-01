@@ -37,7 +37,7 @@ router.get("/", auth, (req, res, next) => {
   try {
     res.json({
       status: "success",
-      message: "here is the user ",
+      message: "here is the user info",
       user: req.userInfo,
     });
   } catch (error) {
