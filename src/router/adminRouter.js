@@ -27,6 +27,7 @@ import {
   deleteSessionByFilter,
   insertNewSession,
 } from "../model/session/SessionModel.js";
+
 import { otpGenerator } from "../helper/randomGenerator.js";
 
 const router = express.Router();
@@ -36,7 +37,7 @@ router.get("/", auth, (req, res, next) => {
   try {
     res.json({
       status: "success",
-      message: "here is the user info",
+      message: "here is the user ",
       user: req.userInfo,
     });
   } catch (error) {
