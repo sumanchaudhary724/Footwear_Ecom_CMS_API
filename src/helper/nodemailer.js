@@ -108,7 +108,7 @@ export const sendOTPNotification = async (obj) => {
   const info = await transporter.sendMail({
     from: `"EST Store " <${process.env.SMTP_USER}>`, // sender address
     to: email, // list of receivers
-    subject: "Password Rest OTP", // Subject line
+    subject: "Password Reset OTP", // Subject line
     text: `hello ${fName}, Here is the OTP for password reset ${otp}`, // plain text body
     html: `
     <p>
